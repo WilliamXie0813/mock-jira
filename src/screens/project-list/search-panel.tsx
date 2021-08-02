@@ -1,12 +1,25 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, { ChangeEvent } from "react";
+import { Project } from "types/project";
+import { User } from "types/user";
 
-export const SearchPanel: React.VFC = ({ users, param, setParam }: any) => {
+interface SearchPanelProps {
+  users: User[];
+  param: Partial<Pick<Project, "name" | "personId">>;
+  setParam: (param: SearchPanelProps["param"]) => void;
+}
+
+export const SearchPanel: React.VFC<SearchPanelProps> = ({
+  users,
+  param,
+  setParam,
+}) => {
   function onInputChange(e: ChangeEvent<HTMLInputElement>) {
     setParam({ ...param, name: e.target.value });
   }
 
   function onSelectChange(e: ChangeEvent<HTMLSelectElement>) {
-    setParam({ ...param, personId: e.target.value });
+    console.log(e.target.value);
+    setParam({ ...param, personId: e.target.value as any });
   }
 
   return (

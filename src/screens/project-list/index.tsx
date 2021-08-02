@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import qs from "qs";
-import { cleanObject, useDebounce, useMount } from "src/utils";
+import { cleanObject, useDebounce, useMount } from "utils";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen: React.VFC = () => {
-  const [param, setParam] = useState({ name: "", personId: "" });
+  const [param, setParam] = useState<any>({ name: "", personId: "" });
   const [list, setList] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const debouncedParam = useDebounce(param, 2000);

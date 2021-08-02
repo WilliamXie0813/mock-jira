@@ -1,6 +1,8 @@
 import React from "react";
+import { User } from "types/user";
+import { Project } from "types/project";
 
-export const List: React.VFC = ({ list, users }: any) => {
+export const List: React.VFC<any> = ({ list, users }) => {
   return (
     <table>
       <thead>
@@ -10,11 +12,11 @@ export const List: React.VFC = ({ list, users }: any) => {
         </tr>
       </thead>
       <tbody>
-        {list.map((project) => (
-          <tr key={project.personId}>
+        {list.map((project: Project) => (
+          <tr key={project.id}>
             <td>{project.name}</td>
             <td>
-              {users.find((user) => user.id === project.personId)?.name ??
+              {users.find((user: User) => user.id === project.personId)?.name ??
                 "未知"}
             </td>
           </tr>
