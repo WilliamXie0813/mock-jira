@@ -3,37 +3,29 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import qs from "qs";
 import { cleanObject, useDebounce, useMount } from "utils";
+import { useHttp } from "utils/http";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen: React.VFC = () => {
-  const [param, setParam] = useState<any>({ name: "", personId: 0 });
-  const [list, setList] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
-  const debouncedParam = useDebounce(param, 2000);
+	const [param, setParam] = useState<any>({ name: "", personId: null });
+	const [list, setList] = useState<any[]>([]);
+	const [users, setUsers] = useState<any[]>([]);
+	const debouncedParam = useDebounce(param, 200);
+	const client = useHttp();
 
-  useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
-    ).then(async (res) => {
-      if (res.ok) {
-        setList(await res.json());
-      }
-    });
-  }, [debouncedParam]);
+	useEffect(() => {
+		client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+	}, [debouncedParam]);
 
-  useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (res) => {
-      if (res.ok) {
-        setUsers(await res.json());
-      }
-    });
-  });
+	useMount(() => {
+		client("users").then(setUsers);
+	});
 
-  return (
-    <div>
-      <SearchPanel users={users} param={param} setParam={setParam} />
-      <List list={list} users={users} />
-    </div>
-  );
+	return (
+		<div>
+			<SearchPanel users={users} param={param} setParam={setParam} />
+			<List list={list} users={users} />
+		</div>
+	);
 };
