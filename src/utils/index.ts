@@ -21,7 +21,7 @@ export const useMount = (callback: () => void) => {
     }, [])
 }
 
-export function useDebounce<T>(value: T, delay: number) {
+export function useDebounce<T>(value: T, delay: number): T {
     const [debouncedVal, setDebouncedVal] = useState(value);
 
     useEffect(() => {
@@ -30,4 +30,26 @@ export function useDebounce<T>(value: T, delay: number) {
     }, [value, delay])
 
     return debouncedVal;
+}
+
+export function useArray<T>(array: T[]) {
+
+    const [arr, setArr] = useState(array);
+
+    function add(item: T) {
+        setArr([...arr, item]);
+    }
+
+    function removeIndex(index: number) {
+        const copy = [...arr];
+        copy.splice(index, 1);
+        setArr(copy);
+    }
+
+    function clear() {
+        setArr([]);
+    }
+
+    return { arr, setArr, add, removeIndex, clear }
+
 }

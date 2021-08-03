@@ -7,7 +7,7 @@ import { cleanObject, useDebounce, useMount } from "utils";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen: React.VFC = () => {
-  const [param, setParam] = useState<any>({ name: "", personId: "" });
+  const [param, setParam] = useState<any>({ name: "", personId: 0 });
   const [list, setList] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const debouncedParam = useDebounce(param, 2000);
