@@ -25,7 +25,7 @@ export const ProjectListScreen: React.VFC = () => {
 	return (
 		<div>
 			<SearchPanel users={users} param={param} setParam={setParam} />
-			<List list={list} users={users} />
+			<List users={users} />
 		</div>
 	);
 };
