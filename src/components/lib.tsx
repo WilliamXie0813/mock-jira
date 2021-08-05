@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { Button, Spin, Typography } from "antd";
-import { loadDevTools } from "jira-dev-tool";
+import { DevTools } from "jira-dev-tool";
 
 export const Row = styled.div<{
 	gap?: number | boolean;
@@ -38,12 +38,12 @@ export const FullPageLoading = () => (
 	</FullPage>
 );
 
-// export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
-//   <FullPage>
-//     <DevTools />
-//     <ErrorBox error={error} />
-//   </FullPage>
-// );
+export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
+	<FullPage>
+		<DevTools />
+		<ErrorBox error={error} />
+	</FullPage>
+);
 
 // 类型守卫
 const isError = (value: any): value is Error => value?.message;

@@ -32,9 +32,6 @@ export const AuthenticatedApp: React.VFC = () => {
 						</Button>
 					</Dropdown>
 				</HeaderRight>
-				{/* <PageHeader>
-					<button onClick={logout}>登出</button>
-				</PageHeader> */}
 			</Header>
 			<Main>
 				<ProjectListScreen />

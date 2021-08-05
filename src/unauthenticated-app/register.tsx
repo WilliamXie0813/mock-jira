@@ -1,15 +1,29 @@
 import { useAuth } from "context/auth-context";
-import React, { FormEvent } from "react";
-import { Form, Input, Button } from "antd";
+import React from "react";
+import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+export const RegisterScreen: React.VFC<{
+	onError: (err: Error) => void;
+}> = ({ onError }) => {
+	const { register } = useAuth();
 
-export const RegisterScreen: React.VFC = () => {
-	const { register, user } = useAuth();
-
-	function handleSubmit(values: { username: string; password: string }) {
-		register(values);
+	async function handleSubmit({
+		cpassword,
+		...values
+	}: {
+		cpassword: string;
+		username: string;
+		password: string;
+	}) {
+		if (cpassword !== values.password) {
+			return onError(new Error("请确认两次输入的密码相同"));
+		}
+		try {
+			await register(values);
+		} catch (error) {
+			onError(error);
+		}
 	}
 
 	return (
@@ -25,6 +39,12 @@ export const RegisterScreen: React.VFC = () => {
 				rules={[{ required: true, message: "请输入密码" }]}
 			>
 				<Input placeholder="密码" type="password" name="password" />
+			</Form.Item>
+			<Form.Item
+				name={"cpassword"}
+				rules={[{ required: true, message: "请确认密码" }]}
+			>
+				<Input placeholder="确认密码" type="password" name="cpassword" />
 			</Form.Item>
 			<Form.Item>
 				<LongButton type="primary" htmlType="submit">

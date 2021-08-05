@@ -3,6 +3,8 @@ import * as auth from "auth-provider";
 import { User } from "types/user";
 import { http } from "utils/http";
 import { useMount } from "utils";
+import { useAsync } from "utils/use-async";
+import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 
 interface AuthForm {
 	username: string;
@@ -32,17 +34,17 @@ const AuthContext = React.createContext<
 AuthContext.displayName = "AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	// const {
-	// 	data: user,
-	// 	error,
-	// 	isLoading,
-	// 	isIdle,
-	// 	isError,
-	// 	run,
-	// 	setData: setUser,
-	// } = useAsync<User | null>();
+	const {
+		data: user,
+		error,
+		isLoading,
+		isIdle,
+		isError,
+		run,
+		setData: setUser,
+	} = useAsync<User | null>();
 	// const queryClient = useQueryClient();
-	const [user, setUser] = useState<User | null>(null);
+	// const [user, setUser] = useState<User | null>(null);
 	// point free
 	const login = (form: AuthForm) => auth.login(form).then(setUser);
 	const register = (form: AuthForm) => auth.register(form).then(setUser);
@@ -53,16 +55,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		});
 
 	useMount(() => {
-		bootstrapUser().then(setUser);
+		run(bootstrapUser()).then(setUser);
 	});
 
-	// if (isIdle || isLoading) {
-	//   return <FullPageLoading />;
-	// }
+	if (isIdle || isLoading) {
+		return <FullPageLoading />;
+	}
 
-	// if (isError) {
-	//   return <FullPageErrorFallback error={error} />;
-	// }
+	if (isError) {
+		return <FullPageErrorFallback error={error} />;
+	}
 
 	return (
 		<AuthContext.Provider

@@ -1,17 +1,16 @@
 import qs from "qs";
-import axios, { AxiosRequestConfig } from "axios";
 import * as auth from 'auth-provider';
 import { useAuth } from "context/auth-context";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-interface Config extends AxiosRequestConfig {
+interface Config extends RequestInit {
     data?: object;
     token?: string;
 }
 
-export const http = (endPoint: string, { data, token, headers, ...customConfig }: Config = {}) => {
-    const config: AxiosRequestConfig = {
+export const http = (endpoint: string, { data, token, headers, ...customConfig }: Config = {}) => {
+    const config: RequestInit = {
         method: 'GET',
         headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -21,18 +20,24 @@ export const http = (endPoint: string, { data, token, headers, ...customConfig }
     }
 
     if (config.method === 'GET') {
-        endPoint += `?${qs.stringify(data)}`
+        endpoint += `?${qs.stringify(data)}`
     } else {
-        config.data = data || {}
+        config.body = JSON.stringify(data || {});
     }
-    return axios(`${apiUrl}/${endPoint}`, config).then((response) => {
-        const data = response.data;
-        return data;
-    }).catch(err => {
-        auth.logout();
-        window.location.reload();
-        return Promise.reject({ message: err })
-    })
+    return window.fetch(`${apiUrl}/${endpoint}`, config)
+        .then(async (response) => {
+            if (response.status === 401) {
+                await auth.logout();
+                window.location.reload();
+                return Promise.reject({ message: "请重新登录" });
+            }
+            const data = await response.json();
+            if (response.ok) {
+                return data;
+            } else {
+                return Promise.reject(data);
+            }
+        });
 }
 
 export const useHttp = () => {

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export function cleanObject<T>(object: any | T) {
+export function cleanObject(object: { [key: string]: unknown }) {
     const result = { ...object };
     Object.keys(result).forEach(key => {
         const value = result[key];
-        if (isFalsy<typeof value>(value)) {
+        if (isVoid(value)) {
             delete result[key];
         }
     });
@@ -15,9 +15,13 @@ export function isFalsy<T>(value: T | number) {
     return value === 0 ? false : !value
 };
 
+export const isVoid = (value: unknown) =>
+    value === undefined || value === null || value === "";
+
 export const useMount = (callback: () => void) => {
     useEffect(() => {
         callback();
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 }
 
@@ -53,3 +57,19 @@ export function useArray<T>(array: T[]) {
     return { arr, setArr, add, removeIndex, clear }
 
 }
+
+/**
+ * 返回组件的挂载状态，如果还没挂载或者已经卸载，返回false；反之，返回true
+ */
+export const useMountedRef = () => {
+    const mountedRef = useRef(false);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    });
+
+    return mountedRef;
+};

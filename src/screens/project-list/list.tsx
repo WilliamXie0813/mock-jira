@@ -8,9 +8,7 @@ interface ListProps extends TableProps<Project> {
 	users: User[];
 }
 
-export const List: React.VFC<ListProps> = (props) => {
-	const { users } = props;
-
+export const List: React.VFC<ListProps> = ({ users, ...tableProps }) => {
 	return (
 		<Table
 			pagination={false}
@@ -51,7 +49,7 @@ export const List: React.VFC<ListProps> = (props) => {
 					},
 				},
 			]}
-			dataSource={[] as Project[]}
+			{...tableProps}
 		/>
 	);
 };
