@@ -2,6 +2,7 @@ import React from "react";
 import { User } from "types/user";
 import { Project } from "types/project";
 import { Table, TableProps } from "antd";
+import dayjs from "dayjs";
 
 interface ListProps extends TableProps<Project> {
 	users: User[];
@@ -37,27 +38,20 @@ export const List: React.VFC<ListProps> = (props) => {
 						);
 					},
 				},
+				{
+					title: "创建时间",
+					render(value, project) {
+						return (
+							<span>
+								{project.created
+									? dayjs(project.created).format("YYYY-MM-DD")
+									: ""}
+							</span>
+						);
+					},
+				},
 			]}
 			dataSource={[] as Project[]}
 		/>
-		// <table>
-		//   <thead>
-		//     <tr>
-		//       <th>名称</th>
-		//       <th>负责人</th>
-		//     </tr>
-		//   </thead>
-		//   <tbody>
-		//     {list.map((project: Project) => (
-		//       <tr key={project.id}>
-		//         <td>{project.name}</td>
-		//         <td>
-		//           {users.find((user: User) => user.id === project.personId)?.name ??
-		//             "未知"}
-		//         </td>
-		//       </tr>
-		//     ))}
-		//   </tbody>
-		// </table>
 	);
 };

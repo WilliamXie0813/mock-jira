@@ -1,4 +1,4 @@
-import { Input, Select } from "antd";
+import { Form, Input, Select } from "antd";
 import React, { ChangeEvent } from "react";
 import { Project } from "types/project";
 import { User } from "types/user";
@@ -23,19 +23,28 @@ export const SearchPanel: React.VFC<SearchPanelProps> = ({
 	}
 
 	return (
-		<form>
-			<Input type="text" value={param.name} onChange={onInputChange} />
-			<Select
-				defaultValue={`${param.personId ?? ""}`}
-				onChange={onSelectChange}
-			>
-				<Select.Option value="">负责人</Select.Option>
-				{users.map((user) => (
-					<Select.Option key={user.id} value={user.id}>
-						{user.name}
-					</Select.Option>
-				))}
-			</Select>
-		</form>
+		<Form style={{ marginBottom: "2rem" }} layout="inline">
+			<Form.Item>
+				<Input
+					type="text"
+					value={param.name}
+					onChange={onInputChange}
+					placeholder="项目名"
+				/>
+			</Form.Item>
+			<Form.Item>
+				<Select
+					defaultValue={`${param.personId ?? ""}`}
+					onChange={onSelectChange}
+				>
+					<Select.Option value="">负责人</Select.Option>
+					{users.map((user) => (
+						<Select.Option key={user.id} value={user.id}>
+							{user.name}
+						</Select.Option>
+					))}
+				</Select>
+			</Form.Item>
+		</Form>
 	);
 };
