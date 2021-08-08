@@ -13,23 +13,23 @@ const defaultInitialState: State<null> = {
   error: null,
 };
 
-const defaultConfig = {
-  throwOnError: false,
-};
+// const defaultConfig = {
+//   throwOnError: false,
+// };
 
-const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
-  const mountedRef = useMountedRef();
-  return useCallback(
-    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
-    [dispatch, mountedRef]
-  );
-};
+// const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+//   const mountedRef = useMountedRef();
+//   return useCallback(
+//     (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+//     [dispatch, mountedRef]
+//   );
+// };
 
 export const useAsync = <D>(initialState?: State<D>) => {
   const [state, setState] = useState<State<D>>({ ...defaultInitialState, ...initialState });
 
   function setData(data: D) {
-    setState({ data, stat: 'success', error: null })
+    setState({ data: data, stat: 'success', error: null })
   }
 
   function setError(err: Error) {
@@ -52,6 +52,7 @@ export const useAsync = <D>(initialState?: State<D>) => {
       return await Promise.reject(err);
     }
   }
+
   return {
     isIdle: state.stat === "idle",
     isLoading: state.stat === "loading",

@@ -3,6 +3,7 @@ import { User } from "types/user";
 import { Project } from "types/project";
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 interface ListProps extends TableProps<Project> {
 	users: User[];
@@ -17,8 +18,7 @@ export const List: React.VFC<ListProps> = ({ users, ...tableProps }) => {
 					title: "名称",
 					sorter: (a, b) => a.name.localeCompare(b.name),
 					render(value, project) {
-						return <span>{project.name}</span>;
-						// return <Link to={String(project.id)}>{project.name}</Link>;
+						return <Link to={String(project.id)}>{project.name}</Link>;
 					},
 				},
 				{
