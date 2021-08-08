@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
@@ -14,6 +14,7 @@ export const ProjectListScreen: React.VFC = () => {
 	const debouncedParam = useDebounce(param, 200);
 	const { isLoading, data } = useProjects(debouncedParam);
 	const { data: users } = useUsers();
+	useDocumentTitle("项目列表");
 
 	return (
 		<Container>

@@ -73,3 +73,18 @@ export const useMountedRef = () => {
 
     return mountedRef;
 };
+
+export const useDocumentTitle = (title: string, keepOnUmount: boolean = true) => {
+    const oldTitle = document.title;
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
+    useEffect(() => {
+        if (!keepOnUmount) {
+            document.title = oldTitle;
+        }
+    }, []);
+
+}
