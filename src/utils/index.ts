@@ -88,3 +88,7 @@ export const useDocumentTitle = (title: string, keepOnUmount: boolean = true) =>
     }, []);
 
 }
+
+export function resetRoute() {
+    window.location.href = window.location.origin;
+}

@@ -7,6 +7,7 @@ import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
+import { resetRoute } from "utils";
 
 export const AuthenticatedApp: React.VFC = () => {
 	return (
@@ -32,7 +33,9 @@ const PageHeader = () => {
 	return (
 		<Header between={true}>
 			<HeaderLeft gap={true}>
-				<SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+				<Button type="link" onClick={resetRoute}>
+					<SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+				</Button>
 				<h3>User</h3>
 				<h3>Project</h3>
 			</HeaderLeft>
