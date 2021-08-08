@@ -75,7 +75,7 @@ export const useMountedRef = () => {
 };
 
 export const useDocumentTitle = (title: string, keepOnUmount: boolean = true) => {
-    const oldTitle = document.title;
+    const oldTitle = useRef(document.title).current;
 
     useEffect(() => {
         document.title = title;
