@@ -28,24 +28,29 @@ const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
 export const useAsync = <D>(initialState?: State<D>) => {
   const [state, setState] = useState<State<D>>({ ...defaultInitialState, ...initialState });
 
-  const setData = (data: D) => setState({ data, stat: 'success', error: null })
+  function setData(data: D) {
+    setState({ data, stat: 'success', error: null })
+  }
 
-  const setError = (err: Error) => setState({ data: null, stat: 'error', error: err });
+  function setError(err: Error) {
+    setState({ data: null, stat: 'error', error: err });
+  }
 
-  const run = (promise: Promise<D>) => {
+  const run = async (promise: Promise<D>): Promise<D> => {
     if (!promise || !promise.then) {
       throw new Error("");
     }
 
     setState({ ...state, stat: 'loading' });
 
-    return promise.then(data => {
+    try {
+      const data = await promise;
       setData(data);
       return data;
-    }).catch(err => {
+    } catch (err) {
       setError(err);
-      return Promise.reject(err);
-    })
+      return await Promise.reject(err);
+    }
   }
   return {
     isIdle: state.stat === "idle",
