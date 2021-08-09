@@ -6,7 +6,6 @@ import { EpicScreen } from "screens/epic";
 export const ProjectScreen = () => {
 	return (
 		<div>
-			<h1>ProjectScreen</h1>
 			<Link to="kanban">任务看板</Link>
 			<Link to="epic">任务组</Link>
 			<Routes>

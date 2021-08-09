@@ -175,7 +175,8 @@
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",
-    "@types/react-beautiful-dnd": "^13.1.1"
+    "@types/react-beautiful-dnd": "^13.1.1",
+    "@welldone-software/why-did-you-render": "^6.2.0"
   },
   "msw": {
     "workerDirectory": "public"
