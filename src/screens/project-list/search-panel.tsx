@@ -1,4 +1,6 @@
 import { Form, Input, Select } from "antd";
+import { IdSelect } from "components/id-select";
+import { UserSelect } from "components/user-select";
 import React, { ChangeEvent } from "react";
 import { Project } from "types/project";
 import { User } from "types/user";
@@ -18,8 +20,8 @@ export const SearchPanel: React.VFC<SearchPanelProps> = ({
 		setParam({ ...param, name: e.target.value });
 	}
 
-	function onSelectChange(val: string) {
-		setParam({ ...param, personId: +val });
+	function onSelectChange(val: number | undefined) {
+		setParam({ ...param, personId: +(val || 0) });
 	}
 
 	return (
@@ -33,17 +35,11 @@ export const SearchPanel: React.VFC<SearchPanelProps> = ({
 				/>
 			</Form.Item>
 			<Form.Item>
-				<Select
-					defaultValue={`${param.personId ?? ""}`}
+				<UserSelect
+					value={param.personId}
 					onChange={onSelectChange}
-				>
-					<Select.Option value="">负责人</Select.Option>
-					{users.map((user) => (
-						<Select.Option key={user.id} value={user.id}>
-							{user.name}
-						</Select.Option>
-					))}
-				</Select>
+					defaultOptionName="负责人"
+				/>
 			</Form.Item>
 		</Form>
 	);

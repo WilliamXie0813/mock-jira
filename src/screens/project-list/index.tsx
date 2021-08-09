@@ -1,25 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
-import { Project } from "types/project";
-import { useQueryParam } from "utils/url";
+import { useProjectSearchParams } from "./util";
 
 export const ProjectListScreen: React.VFC = () => {
-	const [param, setParam] = useQueryParam(["name", "personId"]);
-	const debouncedParam = useDebounce(param, 200);
-	const { isLoading, data } = useProjects(debouncedParam);
-	const { data: users } = useUsers();
 	useDocumentTitle("项目列表");
+	const [param, setParam] = useProjectSearchParams();
+	const { isLoading, data: list } = useProjects(useDebounce(param, 200));
+	const { data: users } = useUsers();
 
 	return (
 		<Container>
 			<h1>项目列表</h1>
 			<SearchPanel users={users || []} param={param} setParam={setParam} />
-			<List users={users || []} dataSource={data || []} loading={isLoading} />
+			<List users={users || []} dataSource={list || []} loading={isLoading} />
 		</Container>
 	);
 };

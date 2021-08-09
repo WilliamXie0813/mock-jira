@@ -1,7 +1,6 @@
 import { Select } from "antd";
 import React from "react";
 import { Raw } from "types";
-import { option } from "yargs";
 
 type SelectProps = React.ComponentProps<typeof Select>;
 
@@ -18,7 +17,7 @@ export const IdSelect = (props: IIdSelectProps) => {
 
 	return (
 		<Select
-			value={toNumber(value)}
+			value={options?.length ? toNumber(value) : 0}
 			onChange={(val) => onChange(toNumber(val) || undefined)}
 			{...restProps}
 		>
