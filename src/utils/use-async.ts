@@ -27,6 +27,7 @@ const defaultInitialState: State<null> = {
 
 export const useAsync = <D>(initialState?: State<D>) => {
   const [state, setState] = useState<State<D>>({ ...defaultInitialState, ...initialState });
+  const [retry, setRetry] = useState(() => () => { })
 
   function setData(data: D) {
     setState({ data: data, stat: 'success', error: null })
@@ -36,10 +37,12 @@ export const useAsync = <D>(initialState?: State<D>) => {
     setState({ data: null, stat: 'error', error: err });
   }
 
-  const run = async (promise: Promise<D>): Promise<D> => {
+  const run = async (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }): Promise<D> => {
     if (!promise || !promise.then) {
       throw new Error("");
     }
+
+    setRetry(() => () => { runConfig?.retry && run(runConfig?.retry(), runConfig) })
 
     setState({ ...state, stat: 'loading' });
 
@@ -61,8 +64,8 @@ export const useAsync = <D>(initialState?: State<D>) => {
     run,
     setData,
     setError,
+    retry,
     // retry 被调用时重新跑一遍run，让state刷新一遍
-    // retry,
     ...state,
   };
 }

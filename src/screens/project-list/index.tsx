@@ -10,14 +10,19 @@ import { useProjectSearchParams } from "./util";
 export const ProjectListScreen: React.VFC = () => {
 	useDocumentTitle("项目列表");
 	const [param, setParam] = useProjectSearchParams();
-	const { isLoading, data: list } = useProjects(useDebounce(param, 200));
+	const { isLoading, data: list, retry } = useProjects(useDebounce(param, 200));
 	const { data: users } = useUsers();
 
 	return (
 		<Container>
 			<h1>项目列表</h1>
 			<SearchPanel users={users || []} param={param} setParam={setParam} />
-			<List users={users || []} dataSource={list || []} loading={isLoading} />
+			<List
+				refresh={retry}
+				users={users || []}
+				dataSource={list || []}
+				loading={isLoading}
+			/>
 		</Container>
 	);
 };
