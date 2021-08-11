@@ -6,8 +6,12 @@ import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectSearchParams } from "./util";
+import { Row } from "components/lib";
+import { Button } from "antd";
 
-export const ProjectListScreen: React.VFC = () => {
+export const ProjectListScreen = (props: {
+	setProjectModalOpen: (flag: boolean) => void;
+}) => {
 	useDocumentTitle("项目列表");
 	const [param, setParam] = useProjectSearchParams();
 	const { isLoading, data: list, retry } = useProjects(useDebounce(param, 200));
@@ -15,13 +19,24 @@ export const ProjectListScreen: React.VFC = () => {
 
 	return (
 		<Container>
-			<h1>项目列表</h1>
+			<Row between={true}>
+				<h1>项目列表</h1>
+				<Button
+					onClick={() => {
+						props.setProjectModalOpen(true);
+					}}
+				>
+					创建项目
+				</Button>
+			</Row>
+
 			<SearchPanel users={users || []} param={param} setParam={setParam} />
 			<List
 				refresh={retry}
 				users={users || []}
 				dataSource={list || []}
 				loading={isLoading}
+				setProjectModalOpen={props.setProjectModalOpen}
 			/>
 		</Container>
 	);
