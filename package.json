@@ -174,9 +174,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^7.0.1",
     "@types/qs": "^6.9.7",
     "@types/react-beautiful-dnd": "^13.1.1",
-    "@welldone-software/why-did-you-render": "^6.2.0"
+    "@welldone-software/why-did-you-render": "^6.2.0",
+    "msw": "^0.34.0"
   },
   "msw": {
     "workerDirectory": "public"
