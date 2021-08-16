@@ -7,20 +7,21 @@ import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { projectListActions } from "./project-list.slice";
+import { useDispatch } from "react-redux";
 
 interface ListProps extends TableProps<Project> {
 	users: User[];
 	refresh: () => void;
-	setProjectModalOpen: (flag: boolean) => void;
 }
 
 export const List: React.VFC<ListProps> = ({
 	users,
 	refresh,
-	setProjectModalOpen,
 	...tableProps
 }) => {
 	const { mutate } = useEditProject();
+	const dispatch = useDispatch();
 
 	function pinProject(id: number) {
 		return function (pin: boolean) {
@@ -88,7 +89,7 @@ export const List: React.VFC<ListProps> = ({
 											<ButtonNoPadding
 												type="link"
 												onClick={() => {
-													setProjectModalOpen(true);
+													dispatch(projectListActions.openProjectModal());
 												}}
 											>
 												编辑

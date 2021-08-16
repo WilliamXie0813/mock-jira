@@ -8,51 +8,36 @@ import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { PojectPopover } from "components/project-popover";
 
 export const AuthenticatedApp: React.VFC = () => {
-	const [projectModalOpen, setProjectModalOpen] = useState(false);
-
 	return (
 		<Container>
-			<PageHeader setProjectModalOpen={setProjectModalOpen} />
+			<PageHeader />
 			<Main>
 				{/* <ProjectListScreen /> */}
 				<BrowserRouter>
 					<Routes>
-						<Route
-							path="/projects"
-							element={
-								<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
-							}
-						/>
+						<Route path="/projects" element={<ProjectListScreen />} />
 						<Route path="/projects/:projectId/*" element={<ProjectScreen />} />
 						<Navigate to={"/projects"} />
 					</Routes>
 				</BrowserRouter>
 			</Main>
-			<ProjectModal
-				projectModalOpen={projectModalOpen}
-				onClose={() => {
-					setProjectModalOpen(false);
-				}}
-			/>
+			<ProjectModal />
 		</Container>
 	);
 };
 
-const PageHeader = (props: {
-	setProjectModalOpen: (flag: boolean) => void;
-}) => {
+const PageHeader = () => {
 	return (
 		<Header between={true}>
 			<HeaderLeft gap={true}>
 				<Button type="link" onClick={resetRoute} style={{ padding: 0 }}>
 					<SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
 				</Button>
-				<PojectPopover setProjectModalOpen={props.setProjectModalOpen} />
+				<PojectPopover />
 				<span>用户</span>
 			</HeaderLeft>
 			<HeaderRight>

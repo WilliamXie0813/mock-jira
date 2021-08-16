@@ -8,11 +8,12 @@ import { useUsers } from "utils/user";
 import { useProjectSearchParams } from "./util";
 import { Row } from "components/lib";
 import { Button } from "antd";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "./project-list.slice";
 
-export const ProjectListScreen = (props: {
-	setProjectModalOpen: (flag: boolean) => void;
-}) => {
+export const ProjectListScreen = () => {
 	useDocumentTitle("项目列表");
+	const dispatch = useDispatch();
 	const [param, setParam] = useProjectSearchParams();
 	const { isLoading, data: list, retry } = useProjects(useDebounce(param, 200));
 	const { data: users } = useUsers();
@@ -23,7 +24,7 @@ export const ProjectListScreen = (props: {
 				<h1>项目列表</h1>
 				<Button
 					onClick={() => {
-						props.setProjectModalOpen(true);
+						dispatch(projectListActions.openProjectModal());
 					}}
 				>
 					创建项目
@@ -36,7 +37,6 @@ export const ProjectListScreen = (props: {
 				users={users || []}
 				dataSource={list || []}
 				loading={isLoading}
-				setProjectModalOpen={props.setProjectModalOpen}
 			/>
 		</Container>
 	);
