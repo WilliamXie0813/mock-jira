@@ -7,20 +7,20 @@ import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectModal } from "./util";
 
 interface ListProps extends TableProps<Project> {
 	users: User[];
 	refresh: () => void;
-	setProjectModalOpen: (flag: boolean) => void;
 }
 
 export const List: React.VFC<ListProps> = ({
 	users,
 	refresh,
-	setProjectModalOpen,
 	...tableProps
 }) => {
 	const { mutate } = useEditProject();
+	const { open } = useProjectModal();
 
 	function pinProject(id: number) {
 		return function (pin: boolean) {
@@ -85,12 +85,7 @@ export const List: React.VFC<ListProps> = ({
 								overlay={
 									<Menu>
 										<Menu.Item key="edit">
-											<ButtonNoPadding
-												type="link"
-												onClick={() => {
-													setProjectModalOpen(true);
-												}}
-											>
+											<ButtonNoPadding type="link" onClick={open}>
 												编辑
 											</ButtonNoPadding>
 										</Menu.Item>
