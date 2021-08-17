@@ -11,7 +11,7 @@ import { useProjectModal } from "./util";
 
 interface ListProps extends TableProps<Project> {
 	users: User[];
-	refresh: () => void;
+	refresh?: () => void;
 }
 
 export const List: React.VFC<ListProps> = ({
@@ -20,12 +20,16 @@ export const List: React.VFC<ListProps> = ({
 	...tableProps
 }) => {
 	const { mutate } = useEditProject();
-	const { open } = useProjectModal();
+	const { startEdit } = useProjectModal();
 
 	function pinProject(id: number) {
 		return function (pin: boolean) {
-			mutate({ id, pin }).then(refresh);
+			mutate({ id, pin });
 		};
+	}
+
+	function edit(id: number) {
+		startEdit(id);
 	}
 
 	return (
@@ -85,8 +89,23 @@ export const List: React.VFC<ListProps> = ({
 								overlay={
 									<Menu>
 										<Menu.Item key="edit">
-											<ButtonNoPadding type="link" onClick={open}>
+											<ButtonNoPadding
+												type="link"
+												onClick={() => {
+													edit(project.id);
+												}}
+											>
 												编辑
+											</ButtonNoPadding>
+										</Menu.Item>
+										<Menu.Item key="delete">
+											<ButtonNoPadding
+												type="link"
+												onClick={() => {
+													edit(project.id);
+												}}
+											>
+												删除
 											</ButtonNoPadding>
 										</Menu.Item>
 									</Menu>

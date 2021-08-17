@@ -7,13 +7,13 @@ import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectModal, useProjectSearchParams } from "./util";
 import { Row } from "components/lib";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 
 export const ProjectListScreen = () => {
 	const { open } = useProjectModal();
 	useDocumentTitle("项目列表");
 	const [param, setParam] = useProjectSearchParams();
-	const { isLoading, data: list, retry } = useProjects(useDebounce(param, 200));
+	const { isLoading, data: list, error } = useProjects(useDebounce(param, 200));
 	const { data: users } = useUsers();
 
 	return (
@@ -24,8 +24,11 @@ export const ProjectListScreen = () => {
 			</Row>
 
 			<SearchPanel users={users || []} param={param} setParam={setParam} />
+			{error && (
+				<Typography.Text type="danger">{error.message}</Typography.Text>
+			)}
 			<List
-				refresh={retry}
+				// refresh={retry}
 				users={users || []}
 				dataSource={list || []}
 				loading={isLoading}
