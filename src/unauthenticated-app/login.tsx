@@ -3,6 +3,7 @@ import React from "react";
 import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
 import { useAsync } from "utils/use-async";
+import { useDispatch } from "react-redux";
 
 export const LoginScreen: React.VFC<{
 	onError: (err: Error) => void;
