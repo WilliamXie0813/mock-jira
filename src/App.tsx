@@ -7,7 +7,7 @@ import "./App.css";
 
 function App() {
 	const { user } = useAuth();
-	console.log("@@@ AI Review Test1111111");
+	console.log("@@@ AI Review");
 	return (
 		<div className="App">
 			<ErrorBoundary fallbackRender={FullPageErrorFallback}>
